@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bouncing Ball Game</title>
+  <style>
+    canvas {
+      display: block;
+      margin: 20px auto;
+      border: 2px solid #000;
+    }
+  </style>
+</head>
+<body>
+  <h1 style="text-align: center;">Bouncing Ball Game</h1>
+  <canvas id="gameCanvas" width="600" height="400"></canvas>
+  <script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // Ball properties
+    let ball = {
+      x: canvas.width / 2,
+      y: canvas.height / 2,
+      radius: 20,
+      dx: 4, // Horizontal speed
+      dy: 3, // Vertical speed
+      color: 'blue'
+    };
+
+    // Draw the ball
+    function drawBall() {
+      ctx.beginPath();
+      ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+      ctx.fillStyle = ball.color;
+      ctx.fill();
+      ctx.closePath();
+    }
+
+    // Update ball position and check for collisions
+    function update() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+      drawBall();
+
+      // Move the ball
+      ball.x += ball.dx;
+      ball.y += ball.dy;
+
+      // Check for collisions with the edges
+      if (ball.x + ball.radius > canvas.width || ball.x - ball.radius < 0) {
+        ball.dx = -ball.dx; // Reverse horizontal direction
+        changeColor();
+      }
+      if (ball.y + ball.radius > canvas.height || ball.y - ball.radius < 0) {
+        ball.dy = -ball.dy; // Reverse vertical direction
+        changeColor();
+      }
+
+      requestAnimationFrame(update); // Continue the animation
+    }
+
+    // Change ball color
+    function changeColor() {
+      ball.color = '#' + Math.floor(Math.random() * 16777215).toString(16); // Random color
+    }
+
+    // Start the game loop
+    update();
+  </script>
+</body>
+</html>
